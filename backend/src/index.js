@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connectDb } from "./config/db.js";
 import authRouter from "./modules/auth/auth.route.js"
+import productRouter from "./modules/product/product.route.js"
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
@@ -24,6 +25,7 @@ app.use(
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
 
 // Health check endpoint
 app.get("/health", (req, res) => {
