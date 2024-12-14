@@ -12,11 +12,19 @@ const ProductSchema = new mongoose.Schema(
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
     price: { type: Number, required: true },
+  
     sizes: [
       { type: String, enum: ["SM", "MD", "LG", "XL", "XXL"], default: [] },
     ],
     bestseller: { type: Boolean, default: false },
-    imagesByColor: [ImageSchema],
+    imagesByColor: {
+      type: Map,
+      of: {
+        color: { type: String, required: true },
+        images: { type: [String], required: true },
+      },
+      default: {},
+    },
   },
   { timestamps: true }
 );

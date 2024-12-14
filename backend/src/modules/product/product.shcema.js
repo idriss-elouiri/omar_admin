@@ -9,13 +9,16 @@ export const productSchema = z.object({
     .min(10, { message: "يجب أن يكون الوصف على الأقل 10 أحرف" }),
   category: z
     .string({ required_error: "التصنيف مطلوب" })
-    .refine((value) => ["Men", "Women", "Kids"].includes(value), {
+    .refine((value) => ["رجال", "نساء", "اطفال"].includes(value), {
       message: "التصنيف غير صالح",
     }),
   subCategory: z
     .string({ required_error: "التصنيف الفرعي مطلوب" })
     .refine(
-      (value) => ["Topwear", "Bottomwear", "Winterwear"].includes(value),
+      (value) =>
+        ["ملابس علوية", "ملابس سفلية", "ملابس شتوية"].includes(
+          value
+        ),
       { message: "التصنيف الفرعي غير صالح" }
     ),
   price: z

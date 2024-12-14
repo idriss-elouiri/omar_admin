@@ -15,15 +15,18 @@ router.post(
 );
 
 // Get all products
-router.get("/get", verifyToken, productController.getAllProducts);
+router.get("/get", productController.getAllProducts);
 
 // Get a product by ID
-router.get("/:id", verifyToken, productController.getProductById);
+router.get("/:id", productController.getProductById);
 
 // Update a product by ID
-router.put("/update/:id", verifyToken, productController.updateProduct);
+router.put("/edit/:id", verifyToken, productController.updateProduct);
 
 // Delete a product by ID
 router.delete("/delete/:id", verifyToken, productController.deleteProduct);
+
+// add reviews to product
+router.post("/reviews/:id", verifyToken, productController.addReview);
 
 export default router;
