@@ -9,7 +9,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { productSchema } from "../../../backend/src/modules/product/product.shcema"; // مسار المخطط
+import { productSchema } from "../../../backend/src/modules/product/product.shcema.js"; // مسار المخطط
 import ErrorMessage from "./ErrorMessage";
 import LoadingSpinner from "./LoadingSpinner";
 import { useRouter } from "next/navigation";

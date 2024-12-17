@@ -12,7 +12,7 @@ const ProductSchema = new mongoose.Schema(
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
     price: { type: Number, required: true },
-  
+
     sizes: [
       { type: String, enum: ["SM", "MD", "LG", "XL", "XXL"], default: [] },
     ],
@@ -25,6 +25,14 @@ const ProductSchema = new mongoose.Schema(
       },
       default: {},
     },
+    reviews: [
+      {
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        rating: { type: Number, required: true },
+        comment: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );
