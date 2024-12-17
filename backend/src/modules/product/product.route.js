@@ -2,7 +2,8 @@ import express from "express";
 import * as productController from "./product.controller.js";
 import { verifyToken } from "../../utils/verifyUser.js";
 import { validateZod } from "../../middlewares/validate-zod.js";
-import { productSchema } from "../product/product.shcema.js";
+import { productSchema } from "./product.shcema.js";
+
 const router = express.Router();
 
 // Create a product
