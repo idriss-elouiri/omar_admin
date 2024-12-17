@@ -34,12 +34,36 @@ const OrdersTable = () => {
     fetchOrders();
   }, [apiUrl]);
 
-  const handleStatusChange = (orderId, newStatus) => {
-    setStatusUpdates((prevStatusUpdates) => ({
-      ...prevStatusUpdates,
-      [orderId]: newStatus,
-    }));
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      // تحديث حالة الطلب
+      const response = await fetch(`${apiUrl}/api/orders/update-status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, status: newStatus }),
+      });
+
+      if (!response.ok) throw new Error("فشل في تحديث حالة الطلب");
+
+      const data = await response.json();
+
+      // تحديث الحالة في الواجهة
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+
+      // إجراء إضافي عند التسليم
+      if (newStatus === "delivered") {
+        alert("تم تسليم الطلب بنجاح! يمكنك طباعة الوصل.");
+        // هنا يمكنك توجيه المستخدم إلى صفحة طباعة الوصل
+      }
+    } catch (error) {
+      console.error("خطأ في تحديث حالة الطلب:", error);
+    }
   };
+
 
   if (loading) {
     return <div>جاري تحميل الطلبات...</div>;
