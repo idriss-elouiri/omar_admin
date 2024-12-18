@@ -20,9 +20,7 @@ const ProductForm = ({
   title: existingTitle,
   content: existingContent,
   category: existingCategory,
-  subCategory: existingSubCategory,
   price: existingPrice,
-  sizes: existingSizes,
   bestseller: existingBestseller,
   imagesByColor: existingImagesByColor,
 }) => {
@@ -30,9 +28,7 @@ const ProductForm = ({
     title: existingTitle || "",
     content: existingContent || "",
     category: existingCategory || "",
-    subCategory: existingSubCategory || "",
     price: existingPrice || "",
-    sizes: existingSizes || [],
     bestseller: existingBestseller || false,
     imagesByColor: existingImagesByColor || {},
     reviews: [],
@@ -58,31 +54,17 @@ const ProductForm = ({
     "الوردي",
     "اصفر",
   ];
-  const sizeMapping = {
-    SM: "SM",
-    MD: "MD",
-    LG: "LG",
-    XL: "XL",
-    XXL: "XXL",
-  };
+
   const categories = [
-    { label: "رجال", value: "رجال" },
-    { label: "نساء", value: "نساء" },
-    { label: "أطفال", value: "اطفال" },
+    { label: "حواسيب", value: "حواسيب" },
+    { label: "هواتف", value: "هواتف" },
+    { label: "شاشات", value: "شاشات" },
+    { label: "اكسسوارات", value: "اكسسوارات" },
+    { label: "سماعات", value: "سماعات" },
+    { label: "فأرة", value: "فأرة" },
+    { label: "لوحة المفاتيح", value: "لوحة المفاتيح" },
   ];
-
-  const subCategories = [
-    { label: "ملابس علوية", value: "ملابس علوية" },
-    { label: "ملابس سفلية", value: "ملابس سفلية" },
-    { label: "ملابس شتوية", value: "ملابس شتوية" },
-  ];
-
-  const prepareSizesForSubmission = (sizes) =>
-    sizes.map((size) =>
-      Object.keys(sizeMapping).includes(size)
-        ? size
-        : Object.keys(sizeMapping).find((key) => sizeMapping[key] === size)
-    );
+  console.log(formData);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -169,13 +151,6 @@ const ProductForm = ({
 
     if (name === "price") {
       setFormData((prev) => ({ ...prev, [name]: parseFloat(value) || "" }));
-    } else if (type === "checkbox" && name === "sizes") {
-      setFormData((prev) => ({
-        ...prev,
-        sizes: checked
-          ? [...prev.sizes, value]
-          : prev.sizes.filter((size) => size !== value),
-      }));
     } else if (type === "checkbox") {
       setFormData((prev) => ({ ...prev, [name]: checked }));
     } else {
@@ -192,7 +167,6 @@ const ProductForm = ({
     try {
       setLoading(true);
 
-      const preparedSizes = prepareSizesForSubmission(formData.sizes);
       const formattedImagesByColor = Object.keys(
         formData.imagesByColor || {}
       ).reduce((acc, color) => {
@@ -211,7 +185,6 @@ const ProductForm = ({
         },
         body: JSON.stringify({
           ...formData,
-          sizes: preparedSizes,
           imagesByColor: formattedImagesByColor,
         }),
       });
@@ -382,7 +355,7 @@ const ProductForm = ({
         </div>
 
         {/* Category and Sub Category */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-start gap-5">
           <div>
             <label className="block text-xl font-semibold mb-1 text-gray-600">
               فئة المنتج
@@ -404,25 +377,6 @@ const ProductForm = ({
 
           <div>
             <label className="block text-xl font-semibold mb-1 text-gray-600">
-              الفئة الفرعية
-            </label>
-            <select
-              name="subCategory"
-              value={formData.subCategory}
-              onChange={handleInputChange}
-              className="w-[150px] px-4 py-2 border font-semibold rounded-md text-slate-600 border-gray-300"
-            >
-              <option value="">اختر فئة المنتج</option>
-              {subCategories.map((cat) => (
-                <option key={cat.value} value={cat.value}>
-                  {cat.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xl font-semibold mb-1 text-gray-600">
               السعر
             </label>
             <input
@@ -433,36 +387,6 @@ const ProductForm = ({
               className="w-28 px-4 py-2 border rounded-md placeholder:text-slate-600 placeholder:font-semibold border border-gray-300"
               placeholder="25"
             />
-          </div>
-        </div>
-
-        {/* Sizes Selector */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium mb-2">Sizes</label>
-          <div className="flex flex-wrap gap-4">
-            {Object.keys(sizeMapping).map((key) => (
-              <label key={key} className="cursor-pointer">
-                {/* Hidden Checkbox */}
-                <input
-                  type="checkbox"
-                  name="sizes"
-                  value={key}
-                  className="hidden" // Hides the default checkbox
-                  checked={formData.sizes.includes(key)}
-                  onChange={handleInputChange}
-                />
-                {/* Custom Styled Div */}
-                <div
-                  className={`w-16 h-16 flex items-center justify-center rounded-lg font-bold text-white transition-all ${
-                    formData.sizes.includes(key)
-                      ? "bg-pink-300 text-slate-600 scale-105 shadow-md"
-                      : "bg-blue-100 text-slate-600 shadow-blue-300"
-                  }`}
-                >
-                  {sizeMapping[key]} {/* Display the size label */}
-                </div>
-              </label>
-            ))}
           </div>
         </div>
 
@@ -497,7 +421,6 @@ const ProductForm = ({
       {errors.category && <ErrorMessage message={errors.category} />}
       {errors.price && <ErrorMessage message={errors.price} />}
       {errors.content && <ErrorMessage message={errors.content} />}
-      {errors.sizes && <ErrorMessage message={errors.sizes} />}
       {errors.imagesByColor && <ErrorMessage message={errors.imagesByColor} />}
     </div>
   );

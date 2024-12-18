@@ -31,11 +31,6 @@ export const getAllProducts = async (req, res, next) => {
           $in: req.query.categories.split(",").map(decodeURIComponent),
         },
       }),
-      ...(req.query.types && {
-        subCategory: {
-          $in: req.query.types.split(",").map(decodeURIComponent),
-        },
-      }),
       ...(req.query.bestseller && {
         bestseller: req.query.bestseller === "true",
       }),
@@ -135,5 +130,3 @@ export const addReview = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-

@@ -9,24 +9,24 @@ export const productSchema = z.object({
     .min(10, { message: "يجب أن يكون الوصف على الأقل 10 أحرف" }),
   category: z
     .string({ required_error: "التصنيف مطلوب" })
-    .refine((value) => ["رجال", "نساء", "اطفال"].includes(value), {
-      message: "التصنيف غير صالح",
-    }),
-  subCategory: z
-    .string({ required_error: "التصنيف الفرعي مطلوب" })
     .refine(
       (value) =>
-        ["ملابس علوية", "ملابس سفلية", "ملابس شتوية"].includes(
-          value
-        ),
-      { message: "التصنيف الفرعي غير صالح" }
+        [
+          "حواسيب",
+          "هواتف",
+          "شاشات",
+          "اكسسوارات",
+          "سماعات",
+          "فأرة",
+          "لوحة المفاتيح",
+        ].includes(value),
+      {
+        message: "التصنيف غير صالح",
+      }
     ),
   price: z
     .number({ required_error: "السعر مطلوب" })
     .positive({ message: "يجب أن يكون السعر رقمًا موجبًا" }),
-  sizes: z
-    .array(z.enum(["SM", "MD", "LG", "XL", "XXL"]))
-    .min(1, { message: "يجب تحديد حجم واحد على الأقل" }),
   bestseller: z.boolean().optional(),
   imagesByColor: z
     .record(

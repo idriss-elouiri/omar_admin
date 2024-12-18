@@ -2,11 +2,12 @@ import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_URL,
-  authDomain: "full-stack-real-estate-425912.firebaseapp.com",
-  projectId: "full-stack-real-estate-425912",
-  storageBucket: "full-stack-real-estate-425912.appspot.com",
-  messagingSenderId: "925217467678",
-  appId: "1:925217467678:web:7c3bbd985f2380cbd4ad0f",
+  authDomain: "ecommerce-app-4f3dd.firebaseapp.com",
+  projectId: "ecommerce-app-4f3dd",
+  storageBucket: "ecommerce-app-4f3dd.appspot.com",
+  messagingSenderId: "993257249831",
+  appId: "1:993257249831:web:37f3c882320e5836e60202",
 };
 
+// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
