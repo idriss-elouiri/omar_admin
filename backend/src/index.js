@@ -14,7 +14,6 @@ connectDb();
 
 // Middleware
 app.use(express.json());
-app.options("*", cors());
 app.use(cookieParser());
 app.use(
   cors({
@@ -24,24 +23,26 @@ app.use(
         process.env.FRONTEND_URL2,
       ];
       if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // Allow requests with no `Origin`
+        callback(null, true); // Allow requests with no `Origin` (e.g., Postman)
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Enable credentials
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow required headers
   })
 );
 console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 console.log("FRONTEND_URL2:", process.env.FRONTEND_URL2);
 
 app.use((req, res, next) => {
-  console.log("Origin:", req.headers.origin); // Log the origin header
-  console.log("Request URL:", req.url); // Log the requested endpoint
+  console.log("Origin Header:", req.headers.origin);
+  console.log("Request Method:", req.method);
+  console.log("Request URL:", req.url);
   next();
 });
+
 
 // Routes
 app.use("/api/auth", authRouter);
