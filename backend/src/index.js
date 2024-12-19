@@ -22,25 +22,28 @@ app.use(
         process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
       ];
+
+      // Allow requests with no origin (e.g., server-to-server, health checks)
       if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // Allow requests with no `Origin` (e.g., Postman)
+        callback(null, true); // Allow the request
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error("Not allowed by CORS")); // Block other origins
       }
     },
-    credentials: true, // Enable credentials
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow required headers
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "HEAD"], // Allow HEAD requests
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 console.log("FRONTEND_URL2:", process.env.FRONTEND_URL2);
 
-app.use((req, res, next) => {
-  console.log("Origin Header:", req.headers.origin);
-  console.log("Request Method:", req.method);
-  console.log("Request URL:", req.url);
-  next();
+app.use((err, req, res, next) => {
+  if (err.message === "Not allowed by CORS") {
+    console.error("Blocked Origin:", req.headers.origin);
+  }
+  next(err);
 });
 
 
